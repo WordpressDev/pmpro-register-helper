@@ -17,13 +17,17 @@ This plugin currently requires Paid Memberships Pro.
 
 Add a sign up form to a post/widget/page using a shortcode:
 
+```
 [pmpro_signup level="3" short="1" intro="0" button="Signup Now"]
+```
 
 Adding a field to your checkout page requires two steps: (1) create a field object, (2) call pmprorh_add_registration_field() to add the field to the checkout page. Optionally, you can create your own "checkout_box" or fieldset to the checkout page using pmprorh_add_checkout_box().
 
 e.g.
+```PHP
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 pmprorh_add_registration_field("after_billing_fields", $text);
+```
 
 The first parameter of the pmprorh_add_registration_field designates where the field will show up. Here are the current options:
 - after_username
@@ -38,6 +42,7 @@ The first parameter of the pmprorh_add_registration_field designates where the f
 NOTE: The first parameter of the PMProRH_Field function must contain no spaces or special characters other than _ or -.
 
 Here are some examples of fields:
+```PHP
 //company field is required and editable by admins and users in the profile page
 $text = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 	
@@ -78,27 +83,35 @@ $resume = new PMProRH_Field("resume", "file", array("profile"=>true, "options"=>
 $category = new PMProRH_Field("category", "select", array("options"=>array("cat1"=>"Category 1", "cat2"=>"Category 2")));  
 $subcat1 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 1.1", 2=>"Subcat 1.2", 3=>"Subcat 1.3"), "depends"=>array(array("id"=>"category", "value"=>"cat1"))));  
 $subcat2 = new PMProRH_Field("subcat", "select", array("options"=>array(1=>"Subcat 2.1", 2=>"Subcat 2.2", 3=>"Subcat 2.3"), "depends"=>array(array("id"=>"category", "value"=>"cat2"))));
+```
 
 In can be helpful to store the fields in an array use a loop to add the fields. e.g.
 
+```PHP
 $fields = array();
 $fields[] = new PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 $fields[] = new PMProRH_Field("referral", "text", array("label"=>"Referral Code", "profile"=>"admins"));
 $fields[] = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
 foreach($fields as $field)
 	pmprorh_add_registration_field("checkout_boxes", $field);
+```
 
 Adding a checkout box.
 
+```PHP
 pmprorh_add_checkout_box("personal", "Personal Information");	//order parameter defaults to one more than the last checkout box
 pmprorh_add_checkout_box("business", "Business Information", "Fields below are optional but will help us in verifying your account.");
+```
 
 Then add fields to these boxes.
+
+```PHP
 $field = new PMProRH_Field("gender", "select", array("options"=>array("" => "", "male"=>"Male", "female"=>"Female")));
 pmprorh_add_registration_field("personal", $field);
 
 $field = PMProRH_Field("company", "text", array("size"=>40, "class"=>"company", "profile"=>true, "required"=>true));
 pmprorh_add_registration_field("business", $field);
+```
 
 Note that the "checkout_boxes" location is now just the first checkout_box in the list with order = 0.
 	
